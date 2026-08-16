@@ -1,1 +1,95 @@
-PLACEHOLDER_RESULTS
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="View your past internet speed test results, stored locally in your browser." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <title>History &mdash; NetPulse Speed Test</title>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <nav class="navbar" aria-label="Primary">
+    <div class="nav-inner">
+      <a class="brand" href="index.html" aria-label="NetPulse home">
+        <span class="brand-dot" aria-hidden="true"></span>
+        NetPulse
+      </a>
+      <div id="nav-links" class="nav-links" role="menubar">
+        <a href="index.html">Speed Test</a>
+        <a href="results.html" aria-current="page">History</a>
+        <a href="about.html">About</a>
+        <a href="settings.html">Settings</a>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" type="button">
+          <span id="theme-icon" aria-hidden="true">&#9789;</span>
+        </button>
+        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" type="button">&#9776;</button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div class="container">
+      <section class="hero" style="padding-top:40px;">
+        <h1>Test History</h1>
+        <p class="lead">Every test you run is saved locally in your browser&rsquo;s storage &mdash; nothing is sent to a server.</p>
+      </section>
+
+      <section class="panel">
+        <div class="flex-between" style="margin-bottom:16px;">
+          <h2 class="mt-0 mb-0">Recent tests</h2>
+          <button id="clear-history-btn" class="btn-secondary" type="button">Clear All History</button>
+        </div>
+
+        <div id="history-empty" class="empty-state hidden">
+          <p style="font-size:2rem; margin-bottom:8px;">&#128202;</p>
+          <p>No test results yet.</p>
+          <a class="link-inline" href="index.html">Run your first speed test &rarr;</a>
+        </div>
+
+        <div class="table-wrap">
+          <table id="history-table" class="history-table hidden">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Server</th>
+                <th scope="col">Download</th>
+                <th scope="col">Upload</th>
+                <th scope="col">Ping</th>
+                <th scope="col">Jitter</th>
+                <th scope="col">Mode</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="history-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="detail-modal" class="hidden" role="dialog" aria-modal="true" aria-label="Test result detail" style="position:fixed; inset:0; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; padding:20px; z-index:100;">
+    <div class="panel" style="max-width:480px; width:100%; margin-bottom:0;">
+      <div class="flex-between">
+        <h2 class="mt-0 mb-0">Result Detail</h2>
+        <button id="detail-close" class="icon-btn" type="button" aria-label="Close">&times;</button>
+      </div>
+      <ul id="detail-body" class="info-list"></ul>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p class="mb-0">NetPulse is a static, client-side speed test. No accounts, no servers, no tracking beyond your own browser&rsquo;s localStorage. &middot; <a class="link-inline" href="about.html">How it works</a></p>
+    </div>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/speedtest.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/results.js"></script>
+</body>
+</html>

@@ -1,1 +1,110 @@
-PLACEHOLDER_ABOUT
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="How NetPulse measures your internet speed, its accuracy limitations, and what data it stores." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <title>About &mdash; NetPulse Speed Test</title>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <nav class="navbar" aria-label="Primary">
+    <div class="nav-inner">
+      <a class="brand" href="index.html" aria-label="NetPulse home">
+        <span class="brand-dot" aria-hidden="true"></span>
+        NetPulse
+      </a>
+      <div id="nav-links" class="nav-links" role="menubar">
+        <a href="index.html">Speed Test</a>
+        <a href="results.html">History</a>
+        <a href="about.html" aria-current="page">About</a>
+        <a href="settings.html">Settings</a>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" type="button">
+          <span id="theme-icon" aria-hidden="true">&#9789;</span>
+        </button>
+        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" type="button">&#9776;</button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div class="container">
+      <section class="hero" style="padding-top:40px;">
+        <h1>How NetPulse Works</h1>
+        <p class="lead">A transparent look at the methodology, accuracy limits, and privacy model behind this test.</p>
+      </section>
+
+      <div class="grid grid-2">
+        <section class="panel">
+          <h2 class="mt-0">Download &amp; Upload</h2>
+          <p>NetPulse downloads and uploads randomly-generated data to Cloudflare&rsquo;s public speed-test endpoints (<code>speed.cloudflare.com/__down</code> and <code>/__up</code>), the same infrastructure that powers <a class="link-inline" href="https://speed.cloudflare.com" target="_blank" rel="noopener">speed.cloudflare.com</a>.</p>
+          <p>To saturate fast connections, the test opens multiple parallel connections (configurable in Settings) and steps through increasing payload sizes &mdash; from ~100&nbsp;KB up to 100&nbsp;MB &mdash; so slow connections aren&rsquo;t stuck waiting on huge downloads, while fast connections get enough data to reach their true ceiling.</p>
+          <p class="mb-0">The headline number is the <strong>median</strong> of all measured rounds, which resists distortion from a single slow or lucky round. Average, minimum, and maximum are also shown for transparency.</p>
+        </section>
+
+        <section class="panel">
+          <h2 class="mt-0">Ping &amp; Jitter</h2>
+          <p>Latency is measured by timing repeated requests to the same edge server&rsquo;s <code>/cdn-cgi/trace</code> endpoint, which returns a tiny plaintext response almost instantly. This round-trip time approximates ICMP ping, since browsers cannot send raw ICMP packets.</p>
+          <p class="mb-0"><strong>Jitter</strong> is the average absolute difference between consecutive ping samples &mdash; a measure of how consistent your connection&rsquo;s latency is. High jitter can cause stuttering in video calls and games even when average ping looks fine.</p>
+        </section>
+
+        <section class="panel">
+          <h2 class="mt-0">Packet Loss (Estimated)</h2>
+          <p>Browsers cannot measure true packet loss because JavaScript has no access to raw ICMP/UDP sockets. As an approximation, NetPulse fires many small concurrent HTTP requests with a tight timeout (800&nbsp;ms) and counts how many fail or time out.</p>
+          <p class="mb-0">Treat this figure as a rough signal, not a lab-grade packet loss measurement &mdash; TCP retransmission and browser connection pooling can both mask or exaggerate real loss.</p>
+        </section>
+
+        <section class="panel">
+          <h2 class="mt-0">Server Selection</h2>
+          <p>Before each full test, NetPulse pings every known server and automatically picks the one with the lowest median latency, mirroring how commercial speed tests choose a &ldquo;nearest&rdquo; server. You can override this in the dropdown on the home page or pin a default in Settings.</p>
+          <p class="mb-0">All current servers route through Cloudflare&rsquo;s anycast network, so &ldquo;location&rdquo; differences mostly reflect which data center your ISP&rsquo;s routing sends you to, not a literal city choice.</p>
+        </section>
+      </div>
+
+      <section class="panel">
+        <h2 class="mt-0">Accuracy Limitations</h2>
+        <p>Browser-based speed tests are inherently less precise than dedicated native applications or ISP-side measurements. Known limitations include:</p>
+        <ul>
+          <li><strong>Single measurement point.</strong> You&rsquo;re measuring the path to Cloudflare&rsquo;s edge, not necessarily your ISP&rsquo;s backbone or a specific destination you care about.</li>
+          <li><strong>Browser/OS overhead.</strong> JavaScript garbage collection, tab throttling, and OS network stack behavior all add noise that native tools avoid.</li>
+          <li><strong>TCP ramp-up.</strong> New connections take a moment to reach full throughput (TCP slow start), which is why NetPulse uses parallel connections and multiple size steps rather than one huge single-threaded transfer.</li>
+          <li><strong>Local network conditions.</strong> Wi-Fi congestion, router CPU limits, VPNs, and other active devices on your network can all suppress results below your plan&rsquo;s true ceiling.</li>
+          <li><strong>CDN vs. ISP routing.</strong> A very fast result to Cloudflare doesn&rsquo;t guarantee equally fast performance to every other service you use.</li>
+        </ul>
+        <p class="mb-0">For the most representative reading: use a wired Ethernet connection, close other apps and tabs, disable VPNs, and run the <strong>Full Test</strong> mode a few times at different times of day.</p>
+      </section>
+
+      <section class="panel">
+        <h2 class="mt-0">Privacy &amp; Data Storage</h2>
+        <p>NetPulse has no backend, no database, and no analytics tracking beyond what your browser does by default when contacting Cloudflare&rsquo;s public endpoints and the IP-lookup API.</p>
+        <ul>
+          <li><strong>Test history</strong> is stored only in your browser&rsquo;s <code>localStorage</code>, under your device. It never leaves your machine and is not visible to us.</li>
+          <li><strong>Settings and theme</strong> (units, thread count, duration, dark/light mode) are likewise stored only in <code>localStorage</code>.</li>
+          <li><strong>Network Info panel</strong> calls the free <a class="link-inline" href="https://ipapi.co" target="_blank" rel="noopener">ipapi.co</a> API directly from your browser to show your public IP, approximate location, and ISP. This request goes straight from your browser to ipapi.co &mdash; it does not pass through any server we control.</li>
+          <li><strong>Shareable links</strong> encode your result numbers directly into the URL fragment (after the <code>#</code>). Nothing is uploaded to generate a share link; the data lives entirely in the link itself.</li>
+        </ul>
+        <p class="mb-0">Clearing your browser&rsquo;s site data for this page, or using the &ldquo;Clear All History&rdquo; button on the History page, permanently deletes all stored results.</p>
+      </section>
+
+      <section class="panel mb-0">
+        <h2 class="mt-0">Quality Score</h2>
+        <p class="mb-0">The 0&ndash;100 &ldquo;connection quality score&rdquo; shown after each test is a simple weighted heuristic (download 40%, upload 20%, ping 25%, jitter 10%, packet loss 5%) meant as a friendly, at-a-glance summary. It is not an industry-standard metric &mdash; use the raw numbers above it for anything that requires precision.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="mb-0">NetPulse is a static, client-side speed test. No accounts, no servers, no tracking beyond your own browser&rsquo;s localStorage. &middot; <a class="link-inline" href="about.html">How it works</a></p>
+    </div>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/speedtest.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>

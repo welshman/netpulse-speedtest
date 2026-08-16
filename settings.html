@@ -1,1 +1,116 @@
-PLACEHOLDER_SETTINGS
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Configure NetPulse test duration, thread count, default server, units, and theme." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <title>Settings &mdash; NetPulse Speed Test</title>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <nav class="navbar" aria-label="Primary">
+    <div class="nav-inner">
+      <a class="brand" href="index.html" aria-label="NetPulse home">
+        <span class="brand-dot" aria-hidden="true"></span>
+        NetPulse
+      </a>
+      <div id="nav-links" class="nav-links" role="menubar">
+        <a href="index.html">Speed Test</a>
+        <a href="results.html">History</a>
+        <a href="about.html">About</a>
+        <a href="settings.html" aria-current="page">Settings</a>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" type="button">
+          <span id="theme-icon" aria-hidden="true">&#9789;</span>
+        </button>
+        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" type="button">&#9776;</button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div class="container">
+      <section class="hero" style="padding-top:40px;">
+        <h1>Settings</h1>
+        <p class="lead">Tune how tests run. All settings are saved locally in your browser.</p>
+      </section>
+
+      <form id="settings-form" class="panel">
+        <div class="field-group">
+          <label for="setting-duration">Test duration per stage: <span id="setting-duration-out">10s</span></label>
+          <input type="range" id="setting-duration" min="4" max="30" step="1" aria-describedby="duration-hint" />
+          <p id="duration-hint" class="field-hint">How long the download and upload phases each run for. Longer durations improve accuracy on fast connections but take more time.</p>
+        </div>
+
+        <div class="field-group">
+          <label for="setting-threads">Parallel connections: <span id="setting-threads-out">4</span></label>
+          <input type="range" id="setting-threads" min="1" max="8" step="1" aria-describedby="threads-hint" />
+          <p id="threads-hint" class="field-hint">More parallel connections help saturate very fast connections, but can overload slow or high-latency links. 4&ndash;6 works well for most home connections.</p>
+        </div>
+
+        <div class="field-group">
+          <label for="setting-server">Default test server</label>
+          <select id="setting-server" class="server-select"></select>
+          <p class="field-hint">&ldquo;Auto-select&rdquo; pings all servers and picks the lowest-latency one before every test.</p>
+        </div>
+
+        <div class="field-group">
+          <label>Units</label>
+          <div class="radio-cards" role="radiogroup" aria-label="Units">
+            <label class="radio-card">
+              <input type="radio" name="units" value="Mbps" />
+              Mbps
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="units" value="MBps" />
+              MB/s
+            </label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Theme</label>
+          <div class="radio-cards" role="radiogroup" aria-label="Theme">
+            <label class="radio-card">
+              <input type="radio" name="theme" value="light" />
+              Light
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="theme" value="dark" />
+              Dark
+            </label>
+          </div>
+        </div>
+
+        <div class="btn-row" style="justify-content:flex-start;">
+          <button type="submit" class="start-btn" style="padding:12px 30px; font-size:0.95rem;">Save Settings</button>
+          <button type="button" id="reset-settings-btn" class="btn-secondary">Reset to Defaults</button>
+        </div>
+        <p id="save-status" class="small hidden" style="color:var(--accent-2); font-weight:600; margin-top:10px;" role="status">Settings saved.</p>
+      </form>
+
+      <section class="panel">
+        <h2 class="mt-0">Test Mode Reference</h2>
+        <ul class="info-list">
+          <li><span class="k">Quick Test</span><span class="v">Smaller payloads, fewer ping samples, no packet-loss check &mdash; fast overview</span></li>
+          <li><span class="k">Full Test</span><span class="v">Larger payloads, more ping samples, includes packet-loss estimate &mdash; most accurate</span></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="mb-0">NetPulse is a static, client-side speed test. No accounts, no servers, no tracking beyond your own browser&rsquo;s localStorage. &middot; <a class="link-inline" href="about.html">How it works</a></p>
+    </div>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/speedtest.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>
