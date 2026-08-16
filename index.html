@@ -1,1 +1,162 @@
-PLACEHOLDER_INDEX
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Free, open-source internet speed test. Measure download, upload, ping, jitter, and packet loss right in your browser." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <title>NetPulse &mdash; Internet Speed Test</title>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <nav class="navbar" aria-label="Primary">
+    <div class="nav-inner">
+      <a class="brand" href="index.html" aria-label="NetPulse home">
+        <span class="brand-dot" aria-hidden="true"></span>
+        NetPulse
+      </a>
+      <div id="nav-links" class="nav-links" role="menubar">
+        <a href="index.html" aria-current="page">Speed Test</a>
+        <a href="results.html">History</a>
+        <a href="about.html">About</a>
+        <a href="settings.html">Settings</a>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" type="button">
+          <span id="theme-icon" aria-hidden="true">&#9789;</span>
+        </button>
+        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" type="button">&#9776;</button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div class="container">
+      <section class="hero">
+        <h1>How fast is your internet, really?</h1>
+        <p class="lead">Run a detailed, browser-based speed test with parallel connections, live graphs, and jitter/packet-loss estimates &mdash; no installs, no accounts.</p>
+        <div class="badge-row">
+          <span class="badge">&#9889; Multi-thread download &amp; upload</span>
+          <span class="badge">&#128225; Auto server selection</span>
+          <span class="badge">&#128202; Live speed graph</span>
+          <span class="badge">&#128274; 100% client-side</span>
+        </div>
+      </section>
+
+      <div id="warning-box" role="region" aria-label="Test accuracy notices"></div>
+
+      <div id="shared-banner" class="hidden"></div>
+
+      <section class="panel" aria-label="Speed test">
+        <div class="test-stage">
+          <div class="dial-wrap">
+            <svg viewBox="0 0 320 320" role="img" aria-label="Speed gauge">
+              <circle id="dial-track" class="dial-track" cx="160" cy="160" r="140" fill="none" stroke-width="16"></circle>
+              <circle id="dial-progress" class="dial-progress" cx="160" cy="160" r="140" fill="none" stroke-width="16"></circle>
+            </svg>
+            <div class="dial-center">
+              <div id="dial-value" class="dial-value" aria-live="polite">0.00</div>
+              <div id="dial-unit" class="dial-unit">Mbps</div>
+              <div id="dial-phase" class="dial-phase">Ready</div>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button id="start-btn" class="start-btn" type="button">Start Test</button>
+            <button id="cancel-btn" class="btn-secondary hidden" type="button">Cancel</button>
+          </div>
+
+          <div class="btn-row" role="group" aria-label="Test mode">
+            <button id="mode-quick" class="btn-secondary" type="button" aria-pressed="false">Quick Test</button>
+            <button id="mode-full" class="btn-secondary" type="button" aria-pressed="true">Full Test</button>
+          </div>
+
+          <div style="width:100%; max-width:420px;">
+            <label for="server-select" class="small muted">Test server</label>
+            <select id="server-select" class="server-select" aria-label="Choose test server"></select>
+          </div>
+        </div>
+
+        <div class="chart-wrap" aria-label="Live speed over time" role="img">
+          <canvas id="live-chart"></canvas>
+        </div>
+      </section>
+
+      <section id="results-panel" class="panel hidden fade-in" aria-label="Test results">
+        <div class="section-title">
+          <h2 class="mt-0 mb-0">Results</h2>
+        </div>
+        <div class="metrics-row">
+          <div class="metric-card">
+            <div class="metric-label">Download</div>
+            <div class="metric-value"><span id="result-download">&mdash;</span></div>
+            <div class="metric-sub"><span id="result-download-unit">Mbps</span></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Upload</div>
+            <div class="metric-value"><span id="result-upload">&mdash;</span></div>
+            <div class="metric-sub"><span id="result-upload-unit">Mbps</span></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Ping</div>
+            <div class="metric-value"><span id="result-ping">&mdash;</span></div>
+            <div class="metric-sub">ms (median)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Jitter</div>
+            <div class="metric-value"><span id="result-jitter">&mdash;</span></div>
+            <div class="metric-sub">ms</div>
+          </div>
+        </div>
+
+        <h3>Details</h3>
+        <ul id="result-details" class="info-list"></ul>
+
+        <h3>Share this result</h3>
+        <div class="copy-row">
+          <input id="share-link" type="text" readonly aria-label="Shareable result link" />
+          <button id="copy-share-btn" class="btn-secondary" type="button">Copy Link</button>
+        </div>
+        <p class="small muted">Anyone with this link can view a summary of this result &mdash; the data is encoded directly in the URL, nothing is uploaded anywhere.</p>
+      </section>
+
+      <div class="grid grid-2">
+        <section class="panel" aria-label="Network information">
+          <h2 class="mt-0">Network Info</h2>
+          <ul class="info-list">
+            <li><span class="k">Public IP</span><span class="v" id="net-ip">Loading&hellip;</span></li>
+            <li><span class="k">ISP / Organisation</span><span class="v" id="net-isp">Loading&hellip;</span></li>
+            <li><span class="k">Approx. location</span><span class="v" id="net-loc">Loading&hellip;</span></li>
+            <li><span class="k">Connection type</span><span class="v" id="net-conn">Loading&hellip;</span></li>
+            <li><span class="k">Browser</span><span class="v" id="net-ua" style="max-width:220px; text-align:right; overflow-wrap:anywhere;">Loading&hellip;</span></li>
+          </ul>
+        </section>
+
+        <section class="panel" aria-label="Tips for accurate results">
+          <h2 class="mt-0">Get the most accurate result</h2>
+          <ul class="info-list">
+            <li><span class="k">Wired vs. wireless</span><span class="v">Use Ethernet if possible</span></li>
+            <li><span class="k">Other traffic</span><span class="v">Pause downloads/streams</span></li>
+            <li><span class="k">Devices</span><span class="v">Fewer active devices = cleaner reading</span></li>
+            <li><span class="k">VPN</span><span class="v">Disable for a true ISP reading</span></li>
+          </ul>
+          <p class="small muted mb-0">See the <a class="link-inline" href="about.html">About page</a> for a full explanation of accuracy limitations in browser-based tests.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="mb-0">NetPulse is a static, client-side speed test. No accounts, no servers, no tracking beyond your own browser&rsquo;s localStorage. &middot; <a class="link-inline" href="about.html">How it works</a></p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/speedtest.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
