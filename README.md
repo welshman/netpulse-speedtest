@@ -2,7 +2,7 @@
 
 A fully static, client-side internet speed test that runs entirely on **GitHub Pages** — no backend, no database, no server-side code. It measures download speed, upload speed, ping, jitter, and estimated packet loss directly in the browser using Cloudflare's public, CORS-enabled speed test endpoints.
 
-**Live demo:** enable GitHub Pages for this repo (see below) and visit `https://<your-username>.github.io/<repo-name>/`.
+**Live demo:** https://welshman.github.io/netpulse-speedtest/.
 
 ## Features
 
